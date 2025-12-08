@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<h2>Store</h2>
+<p>Welcome</p>
+
+<table border="1">
+    <tr>
+        <th>Game</th>
+        <th>Description</th>
+        <th>Price</th>
+    </tr>
+    {% for game in games %}
+    <tr>
+        <td><a href="{{ url_for('game_page', game_title=game.title) }}">{{ game.title }}</a></td>
+        <td>{{ game.descrition }}</td>
+        <td>{{ game.price}}USD</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<a href="/library">Go to Library</a>
+{% if islogin %}
+    <a href="/logout">Logout</a>
+{% else %}
+    <a href="/login">Login</a>
+{% endif %}
+</html>

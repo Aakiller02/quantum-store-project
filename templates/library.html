@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<h2>Library</h2>
+<p>Welcome, {{ session['username'] }}!</p>
+
+<table border="1">
+    <tr>
+        <th>Game</th>
+        <th>Description</th>
+    </tr>
+    {% for game in games %}
+    <tr>
+        <td>{{ game.title }}</td>
+        <td>{{ game.descrition }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<a href="/logout">Logout</a>
+<a href="/store">Go to Store</a>
+</html>
