@@ -7,38 +7,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
 </head>
 <body>
-    <div class="container">
-        <h1>Search for a Game</h1>
-        <form action="/search" method="POST">
-            <label for="search">Game Title:</label>
-            <input type="text" id="search" name="search" placeholder="Enter game title" required>
-            <button type="submit">Search</button>
-        </form>
-        <h2>Search Results</h2>
-
-        {% if games %}
-            <table border="1">
-            <tr>
-                <th>Game</th>
-                <th>Description</th>
-                <th>Price</th>
-            </tr>
-            {% for game in games %}
-            <tr>
-                <td><a href="{{ url_for('game_page', game_title=game.title) }}">{{ game.title }}</a></td>
-                <td>{{ game.descrition }}</td>
-                <td>{{ game.price}}USD</td>
-            </tr>
-            {% endfor %}
-        </table>
-        {% else %}
-            <p>No games found matching your search.</p>
-        {% endif %}
-
-        <a href="/store">Back</a>
-    </div>
-</body>
-<body>
     <div class="background">
         <div class="glow-orb orb-1"></div>
         <div class="glow-orb orb-2"></div>
@@ -52,7 +20,7 @@
             <header class="header">
                 <div class="brand">
                     <div class="logo">
-                        <img src="../assets/logo1.jpg" alt="Quantum Store Logo">
+                        <img src="{{ url_for('static', filename='assets/logo1.jpg') }}" alt="Quantum Store Logo">
                     </div>
                     <h1>Quantum Store</h1>
                 </div>
