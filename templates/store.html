@@ -1,27 +1,56 @@
 <!DOCTYPE html>
-<html>
-<h2>Store</h2>
-<p>Welcome</p>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Page</title>
+</head>
+<body>
+    <h2>Store</h2>
+    {% if islogin %}
+        <p>Welcome, {{ session['username'] }}!</p>
+    {% else %}
+        <p>Welcome, Guest!</p>
+    {% endif %}
 
-<table border="1">
-    <tr>
-        <th>Game</th>
-        <th>Description</th>
-        <th>Price</th>
-    </tr>
-    {% for game in games %}
-    <tr>
-        <td><a href="{{ url_for('game_page', game_title=game.title) }}">{{ game.title }}</a></td>
-        <td>{{ game.descrition }}</td>
-        <td>{{ game.price}}USD</td>
-    </tr>
+    <div class="search">
+    <h3>Search for a Game</h3>
+        <form action="/search" method="POST">
+            <label for="search">Game Title:</label>
+            <input type="text" id="search" name="search" placeholder="Enter game title" required>
+            <button type="submit">Search</button>
+        </form>
+    </div>
+    {% for message in get_flashed_messages() %}
+    <div class="flash">
+        {{ message }}
+    </div>
     {% endfor %}
-</table>
+    <table border="1">
+        <tr>
+            <th>Game</th>
+            <th>Description</th>
+            <th>Price</th>
+        </tr>
+        {% for game in games %}
+        <tr>
+            <td><a href="{{ url_for('game_page', game_title=game.title) }}">{{ game.title }}</a></td>
+            <td>{{ game.descrition }}</td>
+            <td>{{ game.price}}USD</td>
+        </tr>
+        {% endfor %}
+    </table>
 
-<a href="/library">Go to Library</a>
-{% if islogin %}
-    <a href="/logout">Logout</a>
-{% else %}
-    <a href="/login">Login</a>
-{% endif %}
+    <a href="/library">Go to Library</a>
+    {% if isadmin %}
+        <a href="/admin_page">Admin</a>
+    {% endif %}
+    {% if islogin %}
+        <a href="/logout">Logout</a>
+    {% else %}
+        <a href="/login">Login</a>
+    {% endif %}
+
+</body>
 </html>

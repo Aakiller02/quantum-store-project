@@ -1,0 +1,84 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='description.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ game.title }} - Description</title>
+</head>
+<body>
+    <div class="background">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+        <div class="glow-orb orb-3"></div>
+    </div>
+
+    <div class="page">
+        <div class="description-container">
+            <header class="header">
+                <div class="brand">
+                    <div class="logo">
+                        <img src="{{ url_for('static', filename='assets/logo1.jpg') }}" alt="Quantum Store Logo">
+                    </div>
+                    <h1>Quantum Store</h1>
+                </div>
+            </header>
+
+    <div class="product-description">
+        <div class="product-image-large gallery-slider">
+            <img src="{{ game.image_url or 'https://via.placeholder.com/150' }}" alt="{{ game.title }} Icon">
+        </div>
+        <div class="product-details">
+            <h2 id="gameTitle">{{ game.title }}</h2>
+            <div class="price" style="color: white;">
+                <label>Developer: </label>
+                <p id="gameDev">{{ developers.name }}</p>
+            </div>
+            <div class="price" style="color: white;">
+                <label>Publisher: </label>
+                <p id="gamePub">{{ publishers.name }}</p>
+            </div>
+            <div class="price" style="color: white;">
+                <label>Release Date: </label>
+                <p id="date">{{ game.release_date }}</p>
+            </div>
+            <div class="price">
+                <label>Price: </label>
+                <p id="gamePrice">RM {{ game.price }}</p>
+            </div>
+            <p style="text-align: justify" class="description-text" id="gameDescription">{{ game.descrition }}</p>
+            {% if owned and islogin %}
+                <div class="price">
+                    <label>Status: </label>
+                    <p id="gameStatus">Owned</p>
+                </div>
+                <button class="btn-buy-now">
+                    PLAY NOW
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M7 3L14 10L7 17" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </button>
+            {% else %}
+                <form method="POST" action="{{ url_for('add_to_cart', game_id=game.id) }}">
+                    <button onclick="window.location.href='/templates/checkout.html'" type="submit" class="btn-buy-now">BUY NOW</button>
+                </form>
+                <form method="POST" action="{{ url_for('add_to_cart', game_id=game.id) }}" style="display:inline;">
+                    <button class="btn" type="submit">Add to Cart</button>
+                </form>
+            {% endif %}
+            <p> </p>
+            <p> </p>
+            <button onclick="history.back()" class="btn">
+                BACK
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M7 3L14 10L7 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+        </div>
+    </div>
+</body>
+</html>

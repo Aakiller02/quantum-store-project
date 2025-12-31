@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit User - Admin Panel</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <a href="{{ url_for('admin') }}" class="navbar-brand">
+                🎮 Quantum Store - Admin Panel
+            </a>
+            <ul class="navbar-menu">
+                <li><a href="{{ url_for('store') }}">Store</a></li>
+                <li><a href="{{ url_for('admin') }}">Admin</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Edit User Form -->
+    <div class="container">
+        <h3>Edit User</h3>
+        <form method="POST">
+            <input type="hidden" name="user_id" value="{{ users['id'] }}">
+
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username" value="{{ users['username'] }}" class="form-control" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Update User</button>
+            <button onclick="history.back()" class="btn">BACK</button>
+        </form>
+    </div>
+
+</body>
+</html>

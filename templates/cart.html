@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Store - Shopping Cart</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='cart.css') }}">
+</head>
+
+<body>
+    <div class="background">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+        <div class="glow-orb orb-3"></div>
+    </div>
+
+    <div class="page">
+        <div class="cart-container">
+            <h1 class="cart-title">Shopping Cart</h1>
+
+            <div class="cart-header">
+                <span class="header-item">Item</span>
+                <span class="header-name">Name</span>
+                <span class="header-quantity">Options</span>
+            </div>
+
+            <div class="cart-items">
+                {% if cart_items %}
+                    {% for item in cart_items %}
+                        <div class="cart-item">
+                            <div class="item-image">
+                                <img src="{{ item.image_url or '' }}" alt="{{ item.title }}">
+                            </div>
+                            <div class="item-details">
+                                <h3 class="item-name">{{ item.title }}</h3>
+                                <p class="item-price-label">Price</p>
+                                <p class="item-price">RM {{ '%.2f'|format(item.price) }}</p>
+                            </div>
+                            <div class="item-quantity">
+                                <form method="POST" action="{{ url_for('remove_from_cart', game_id=item.id) }}">
+                                    <button type="submit" class="qty-btn minus">Remove</button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p style="color: white;">Your cart is empty.</p>
+                {% endif %}
+            </div>
+
+            <div class="cart-total">
+                <span class="total-label">Total:</span>
+                <span class="total-amount">RM {{ '%.2f'|format(total) }}</span>
+            </div>
+
+            <form method="GET" action="{{ url_for('checkoutPage') }}">
+                <button onclick="window.location.href='../templates/checkout.html'" type="submit" class="btn btn-primary">Checkout</button>
+            </form>
+            <button onclick="history.back()" class="btn">
+                BACK
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M7 3L14 10L7 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function increaseQuantity(btn) {
+            const qtyValue = btn.previousElementSibling;
+            let currentQty = parseInt(qtyValue.textContent);
+            qtyValue.textContent = currentQty + 1;
+            updateTotal();
+        }
+
+        function decreaseQuantity(btn) {
+            const qtyValue = btn.nextElementSibling;
+            let currentQty = parseInt(qtyValue.textContent);
+            if (currentQty > 1) {
+                qtyValue.textContent = currentQty - 1;
+                updateTotal();
+            }
+        }
+
+        function updateTotal() {
+            let total = 0;
+            const items = document.querySelectorAll('.cart-item');
+            items.forEach(item => {
+                const price = parseFloat(item.querySelector('.item-price').textContent.replace('RM', ''));
+                const qty = parseInt(item.querySelector('.qty-value').textContent);
+                total += price * qty;
+            });
+            document.querySelector('.total-amount').textContent = 'RM' + total.toFixed(2);
+        }
+    </script>
+</body>
+</html>

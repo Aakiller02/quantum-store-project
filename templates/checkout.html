@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Store - Payment Method</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='payment.css') }}">
+</head>
+
+<body>
+    <div class="background">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+        <div class="glow-orb orb-3"></div>
+    </div>
+
+    <div class="page">
+        <div class="payment-container">
+            <h1 class="payment-title">Payment Method</h1>
+
+            <div class="payment-methods">
+                <div class="payment-option" onclick="selectPayment(this)">
+                    <div class="payment-icons">
+                        <div class="icon-circle mastercard">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <circle cx="9" cy="12" r="7" fill="#EB001B" />
+                                <circle cx="15" cy="12" r="7" fill="#F79E1B" />
+                            </svg>
+                        </div>
+                        <div class="icon-circle visa">
+                            <svg width="24" height="18" viewBox="0 0 24 18" fill="white">
+                                <text x="2" y="14" font-family="Arial" font-weight="bold" font-size="10">VISA</text>
+                            </svg>
+                        </div>
+                    </div>
+                    <span class="payment-label">Credit/Debit Card</span>
+                    <div class="payment-icon-right">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <rect x="2" y="4" width="20" height="16" rx="2" stroke="white" stroke-width="2" />
+                            <line x1="2" y1="9" x2="22" y2="9" stroke="white" stroke-width="2" />
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="payment-option" onclick="selectPayment(this)">
+                    <div class="payment-icons">
+
+                        <!-- FPX -->
+                        <div class="icon-circle fpx">
+                            <img src="https://images.seeklogo.com/logo-png/38/1/fpx-logo-png_seeklogo-389674.png"
+                                alt="FPX">
+                        </div>
+
+                        <div class="icon-circle maybank">
+                            <svg width="26" height="26" viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="10" fill="#F9D423" />
+                                <path d="M7 14C9 10 15 10 17 14C15 16 9 16 7 14Z" fill="black" />
+                            </svg>
+                        </div>
+
+                        <div class="icon-circle cimb">
+                            <svg width="26" height="26" viewBox="0 0 24 24">
+                                <rect width="24" height="24" rx="4" fill="#C8102E" />
+                                <polygon points="6,12 12,6 18,12 12,18" fill="white" />
+                            </svg>
+                        </div>
+                    </div>
+                    <span class="payment-label">FPX Online Banking</span>
+
+                    <div class="payment-icon-right">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M4 7H20V17H4V7Z" stroke="white" stroke-width="2" />
+                            <circle cx="12" cy="12" r="2" stroke="white" stroke-width="2" />
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="payment-option" onclick="selectPayment(this)">
+                    <div class="payment-icons">
+
+                        <div class="icon-circle tng">
+                            <svg width="24" height="24" viewBox="0 0 24 24">
+                                <rect width="24" height="24" rx="5" fill="#006CFF" />
+                                <text x="5" y="15" font-size="9" font-weight="bold" fill="white">TNG</text>
+                            </svg>
+                        </div>
+
+                        <div class="icon-circle grab">
+                            <svg width="24" height="24" viewBox="0 0 24 24">
+                                <rect width="24" height="24" rx="5" fill="#00B14F" />
+                                <text x="3" y="15" font-size="8" font-weight="bold" fill="white">GRAB</text>
+                            </svg>
+                        </div>
+
+                        <div class="icon-circle boost">
+                            <svg width="24" height="24" viewBox="0 0 24 24">
+                                <rect width="24" height="24" rx="5" fill="#FF3B30" />
+                                <circle cx="12" cy="12" r="6" fill="white" />
+                            </svg>
+                        </div>
+                    </div>
+
+                    <span class="payment-label">E-Wallet</span>
+
+                    <div class="payment-icon-right">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M19 7H5C3.9 7 3 7.9 3 9V18C3 19.1 3.9 20 5 20H19C20.1 20 21 19.1 21 18V9C21 7.9 20.1 7 19 7Z"
+                                stroke="white" stroke-width="2" />
+                            <path d="M16 7V5C16 4 15 3 14 3H10C9 3 8 4 8 5V7" stroke="white" stroke-width="2" />
+                        </svg>
+                    </div>
+                </div>
+
+
+                <div class="promo-section">
+                    <input type="text" class="promo-input" placeholder="Promo Code">
+                    <button class="promo-btn">Apply</button>
+                </div>
+            </div>
+
+            <div class="payment-sections">
+                <section id="cyberpunk" class="payment-section">
+                    <div class="price-summary">
+                        <div class="price-row">
+                            <span class="price-title">Item</span>
+                            <span class="price-value">Cyberpunk 2077</span>
+                        </div>
+                        <div class="price-row">
+                            <span class="price-label">Price</span>
+                            <span class="price-value">RM25.00</span>
+                        </div>
+                        <div class="price-row">
+                            <span class="price-label">Tax</span>
+                            <span class="price-value">RM0.50</span>
+                        </div>
+                        <div class="price-divider"></div>
+                        <div class="price-row total">
+                            <span class="price-label">Total</span>
+                            <span class="price-value">RM25.50</span>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="genshin" class="payment-section">
+                    <div class="price-summary">
+                        <div class="price-row">
+                            <span class="price-title">Item</span>
+                            <span class="price-value">Genshin Impact</span>
+                        </div>
+                        <div class="price-row">
+                            <span class="price-label">Price</span>
+                            <span class="price-value">RM25.00</span>
+                        </div>
+                        <div class="price-row">
+                            <span class="price-label">Tax</span>
+                            <span class="price-value">RM0.50</span>
+                        </div>
+                        <div class="price-divider"></div>
+                        <div class="price-row total">
+                            <span class="price-label">Total</span>
+                            <span class="price-value">RM25.50</span>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="cod" class="payment-section">
+                    <div class="price-summary">
+                        <div class="price-row">
+                            <span class="price-title">Item</span>
+                            <span class="price-value">Call of Duty</span>
+                        </div>
+                        <div class="price-row">
+                            <span class="price-label">Price</span>
+                            <span class="price-value">RM25.00</span>
+                        </div>
+                        <div class="price-row">
+                            <span class="price-label">Tax</span>
+                            <span class="price-value">RM0.50</span>
+                        </div>
+                        <div class="price-divider"></div>
+                        <div class="price-row total">
+                            <span class="price-label">Total</span>
+                            <span class="price-value">RM25.50</span>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="cs-go" class="payment-section">
+                    <div class="price-summary">
+                        <div class="price-row">
+                            <span class="price-title">Item</span>
+                            <span class="price-value">CS GO</span>
+                        </div>
+                        <div class="price-row">
+                            <span class="price-label">Tax</span>
+                            <span class="price-value">RM0.50</span>
+                        </div>
+                        <div class="price-divider"></div>
+                        <div class="price-row total">
+                            <span class="price-label">Total</span>
+                            <span class="price-value">RM75.50</span>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="valorant" class="payment-section">
+                    <div class="price-summary">
+                        <div class="price-row">
+                            <span class="price-title">Item</span>
+                            <span class="price-value">Valorant</span>
+                        </div>
+                        <div class="price-row">
+                            <span class="price-label">Price</span>
+                            <span class="price-value">RM25.00</span>
+                        </div>
+                        <div class="price-row">
+                            <span class="price-label">Tax</span>
+                            <span class="price-value">RM0.50</span>
+                        </div>
+                        <div class="price-divider"></div>
+                        <div class="price-row total">
+                            <span class="price-label">Total</span>
+                            <span class="price-value">RM25.50</span>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="fortnite" class="payment-section">
+                    <div class="price-summary">
+                        <div class="price-row">
+                            <span class="price-title">Item</span>
+                            <span class="price-value">Fortnite</span>
+                        </div>
+                        <div class="price-row">
+                            <span class="price-label">Price</span>
+                            <span class="price-value">RM25.00</span>
+                        </div>
+                        <div class="price-row">
+                            <span class="price-label">Tax</span>
+                            <span class="price-value">RM0.50</span>
+                        </div>
+                        <div class="price-divider"></div>
+                        <div class="price-row total">
+                            <span class="price-label">Total</span>
+                            <span class="price-value">RM25.50</span>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <form method="POST" action="{{ url_for('checkoutPage') }}">
+                    <button type="submit" class="pay-btn">PAY NOW</button>
+            </form>
+        </div>
+        </div>
+
+        <script>
+            function selectPayment(element) {
+                const options = document.querySelectorAll('.payment-option');
+                options.forEach(option => {
+                    option.classList.remove('selected');
+                });
+
+                element.classList.add('selected');
+            }
+        </script>
+
+</body>
+
+</html>

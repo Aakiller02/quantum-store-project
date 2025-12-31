@@ -1,11 +1,52 @@
 <!DOCTYPE html>
-<html>
-<form method="POST">
-    <h2>Create Account</h2>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Store - Register</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='register.css') }}">
+</head>
 
-    <input name="username" placeholder="Username" required><br>
-    <input name="password" type="password" placeholder="Password" required><br>
+<body>
+    <div class="background">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+        <div class="glow-orb orb-3"></div>
+    </div>
 
-    <button type="submit">Register</button>
-</form>
+    <div class="page">
+        <div class="login-card">
+            <div class="brand">
+                <div class="logo">
+                    <img src="{{ url_for('static', filename='assets/logo1.jpg') }}" alt="Quantum Store Logo">
+                </div>
+                <h1>Quantum Store</h1>
+            </div>
+
+            <div class="content-register">
+                <div class="form-section">
+                    <form method="POST" action="/register">
+                        <div class="title">
+                            <label>Username</label>
+                            <input class="fn-card" name="username" type="text" placeholder="" required><br>
+                        </div>
+
+                        <div class="title">
+                            <label>Password</label>
+                            <input class="pw-card" name="password" type="password" placeholder="" required><br>
+                        </div>
+
+                        <button type="submit" class="btn btn-register">
+                            REGISTER NOW
+                        </button>
+
+                        <p class="login-link">
+                            Already have an account? <a href="/login">Login</a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
 </html>

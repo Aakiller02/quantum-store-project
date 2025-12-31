@@ -1,17 +1,74 @@
+
 <!DOCTYPE html>
-<html>
-<form method="POST">
-    <h2>Login</h2>
+<html lang="en">
 
-    {% if error %}
-        <p style="color:red;">{{ error }}</p>
-    {% endif %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Store</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
+</head>
 
-    <input name="username" placeholder="Username" required><br>
-    <input name="password" placeholder="Password" type="password" required><br>
+<body>
+    <div class="background">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+        <div class="glow-orb orb-3"></div>
+    </div>
 
-    <button type="submit">Login</button>
-    <a href="/register">Register</a>
-</form>
+    <div class="page">
+        <div class="login-card">
+            <div class="brand">
+                <div class="logo">
+                    <img src="{{ url_for('static', filename='assets/logo1.jpg') }}" alt="Quantum Store Logo">
+                </div>
+                <h1>Quantum Store</h1>
+            </div>
+
+            <div class="content">
+                <div class="left">
+                    <form method="POST">
+
+                        {% if error %}
+                            <p style="color:red;">{{ error }}</p>
+                        {% endif %}
+
+                        <div class="title">
+                            <label>Sign in with username</label>
+                            <input class="sg-card" name="username" placeholder="Username" required><br>
+                        </div>
+
+                        <div class="title">
+                            <label>Enter your password</label>
+                            <input class="pw-card" name="password" placeholder="Password" type="password" required><br>
+                        </div>
+
+                        <button type="submit" class="btn">
+                            LOGIN NOW
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M7 3L14 10L7 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+
+                        <a href="/register" class="btn">
+                            REGISTER NOW
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M7 3L14 10L7 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </a>
+                    </form>
+                </div>
+
+                <div class="right">
+                    <p>Sign in with qr</p>
+                    <div class="qr-code">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=QuantumStore" alt="QR Code">
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
 
 </html>

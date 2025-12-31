@@ -26,8 +26,25 @@
                 <label>Rating:</label>
                 <p id="gameRating">{{ game.rating }}</p>
             </div>
-            <button>Play</button>
-            <button>Back</button>
+
+            {% if owned and islogin %}
+                <div class="game-details">
+                    <label>Status: </label>
+                    <p id="gameStatus">Owned</p>
+                </div>
+                <button>Play</button>
+            {% else %}
+                <div class="game-details">
+                    <label>Status: </label>
+                    <p id="gameStatusNotOwned">Not Owned</p>
+                </div>
+                <div class="game-details">
+                    <label>Price: </label>
+                    <p id="gamePrice">{{ game.price }} USD</p>
+                </div>
+                <button>Add to Cart</button>
+            {% endif %}
+            <button onclick="history.back()">Back</button>
         </div>
     </div>
 </body>

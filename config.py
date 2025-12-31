@@ -8,4 +8,4 @@ MYSQL_USER = 'root'
 MYSQL_PASSWORD = ''
 MYSQL_DB = 'Quantum'
 MYSQL_CURSORCLASS = 'DictCursor'
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = 'python -c "import secrets; print(secrets.token_hex(32))"'

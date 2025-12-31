@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Quantum Store</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="background">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+        <div class="glow-orb orb-3"></div>
+    </div>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1>🛠️ Admin Dashboard</h1>
+            <p>Manage games, developers, and publishers</p>
+        </div>
+
+        <!-- Add New Game Form -->
+        <div class="card mb-3">
+            <h2 class="card-header">➕ Add New Game (CREATE)</h2>
+            <form method="POST" action="{{ url_for('admin_add_game') }}">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Game Title *</label>
+                        <input type="text" name="title" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Price (USD) *</label>
+                        <input type="number" name="price" class="form-control" step="0.01" min="0" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <textarea name="description" class="form-control" rows="3"></textarea>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Developer *</label>
+                        <select name="developer_id" class="form-control" required>
+                            <option value="">Select Developer</option>
+                            {% for dev in developers %}
+                                <option value="{{ dev.id }}">{{ dev.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Publisher *</label>
+                        <select name="publisher_id" class="form-control" required>
+                            <option value="">Select Publisher</option>
+                            {% for pub in publishers %}
+                                <option value="{{ pub.id }}">{{ pub.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Release Date</label>
+                        <input type="date" name="release_date" class="form-control">
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-success btn-lg">Add Game</button>
+            </form>
+        </div>
+
+        <!-- Sorting by Game Title -->
+        <form method="GET" action="{{ url_for('admin') }}"><br>
+            <label for="sort_by_title">Sort by Title:</label>
+            <select name="sort_by_title" id="sort_by_title">
+                <option value="asc">{% if request.args.get('sort_by_title') == 'asc' %}selected{% endif %}A-Z</option>
+                <option value="desc">{% if request.args.get('sort_by_title') == 'desc' %}selected{% endif %}Z-A</option>
+            </select>
+            <button type="submit">Sort</button>
+        </form>
+
+
+        <!-- Games Management Table -->
+        <div class="card">
+            <h2 class="card-header">📋 Manage Games (READ / UPDATE / DELETE)</h2>
+            
+            {% if games %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Price</th>
+                            <th>Developer</th>
+                            <th>Publisher</th>
+                            <th>Release Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for game in games %}
+                            <tr id="{{ game.id }}">
+                                <td>{{ game.id }}</td>
+                                <td><strong>{{ game.title }}</strong></td>
+                                <td>${{ "%.2f"|format(game.price) }}</td>
+                                <td>{{ game.developer_name }}</td>
+                                <td>{{ game.publisher_name }}</td>
+                                <td>{{ game.release_date }}</td>
+                                <td>
+                                    <div style="display: flex; gap: 0.5rem;">
+                                        <a href="{{ url_for('admin_edit_game', game_id=game['game_id']) }}" class="btn btn-primary btn-sm">Edit</a>
+                                        <form method="POST" action="{{ url_for('admin_delete_game', game_id=game.game_id) }}" style="display: inline;">
+                                            <button type="submit" class="btn btn-danger btn-sm" 
+                                                    onclick="return confirm('Delete {{ game.title }}? This will remove all related data.')">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="empty-state">
+                    <p>No games in database</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- User Management Table -->
+        <div class="card">
+            <br><h2 class="card-header">📋 Manage User (READ / UPDATE / DELETE)</h2>
+            
+            {% if users %}
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                            <tr id="{{ user.id }}">
+                                <td>{{ user.id }}</td>
+                                <td><strong>{{ user.username }}</strong></td>
+                                <td>
+                                    <div style="display: flex; gap: 0.5rem;">
+                                        <a href="{{ url_for('admin_edit_user', user_id=user.id) }}" class="btn btn-primary btn-sm">Edit</a>
+                                        <form method="POST" action="{{ url_for('admin_delete_user', user_id=user.id) }}" style="display: inline;">
+                                            <button type="submit" class="btn btn-danger btn-sm" 
+                                                    onclick="return confirm('Delete {{ user.username }}? This will remove all related data.')">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="empty-state">
+                    <p>No games in database</p>
+                </div>
+            {% endif %}
+            <button class="btn">
+                <a href="{{ url_for('library') }}">
+                    Go to Library
+                </a>
+            </button>
+        </div>
+    </div>
+
+    <!-- Edit Game Modal -->
+    <div id="editModal" class="modal-overlay" style="display: none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">✏️ Edit Game</h2>
+                <button class="modal-close" onclick="closeEditModal()">×</button>
+            </div>
+            <form id="editForm" method="POST">
+                <input type="hidden" id="edit_game_id" name="id">
+                
+                <div class="form-group">
+                    <label class="form-label">Game Title</label>
+                    <input type="text" id="edit_title" name="title" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <textarea id="edit_description" name="description" class="form-control" rows="3"></textarea>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Price</label>
+                        <input type="number" id="edit_price" name="price" class="form-control" step="0.01" min="0" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Release Date</label>
+                        <input type="date" id="edit_release_date" name="release_date" class="form-control">
+                    </div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div class="form-group">
+                        <label class="form-label">Developer</label>
+                        <select id="edit_developer_id" name="developer_id" class="form-control" required>
+                            {% for dev in developers %}
+                                <option value="{{ dev.developer_id }}">{{ dev.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Publisher</label>
+                        <select id="edit_publisher_id" name="publisher_id" class="form-control" required>
+                            {% for pub in publishers %}
+                                <option value="{{ pub.publisher_id }}">{{ pub.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                    <button type="submit" class="btn btn-primary">Update Game</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit User Modal -->
+    <div id="editUserModal" class="modal-overlay" style="display: none;">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">✏️ Edit User</h2>
+                <button class="modal-close" onclick="closeEditModal()">×</button>
+            </div>
+            <form id="editUserForm" method="POST">
+                <input type="hidden" id="edit_user_id" name="id">
+                
+                <div class="form-group">
+                    <label class="form-label">User Name</label>
+                    <input type="text" id="edit_name" name="name" class="form-control" required>
+                </div>
+                
+                <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                    <button type="submit" class="btn btn-primary">Update User</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+
+        function editGame(gameId) {
+            const game = gamesData[gameId];
+            if (!game) return;
+            
+            document.getElementById('edit_game_id').value = gameId;
+            document.getElementById('edit_title').value = game.title;
+            document.getElementById('edit_description').value = game.descrition;
+            document.getElementById('edit_price').value = game.price;
+            document.getElementById('edit_release_date').value = game.release_date;
+            document.getElementById('edit_developer_id').value = game.developer_id;
+            document.getElementById('edit_publisher_id').value = game.publisher_id;
+            
+            document.getElementById('editForm').action = '/admin_page/game/edit/' + gameId;
+            document.getElementById('editModal').style.display = 'flex';
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('editModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeEditModal();
+            }
+        });
+
+        // Auto-hide flash messages
+        setTimeout(function() {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                alert.style.transition = 'opacity 0.5s';
+                alert.style.opacity = '0';
+                setTimeout(() => alert.remove(), 500);
+            });
+        }, 5000);
+    </script>
+</body>
+</html>
